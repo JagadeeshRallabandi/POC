@@ -71,14 +71,15 @@ if 'vector_ready' in st.session_state and st.session_state.vector_ready:
                 similarities.append((similarity, doc))
 
             # Filter documents based on a similarity threshold
-            matched_docs = [doc for sim, doc in similarities if sim >= 0.75]
+            matched_docs = [(sim, doc) for sim, doc in similarities if sim >= 0.75]
 
             if matched_docs:
                 st.write("Matched Applications:")
-                for i, doc in enumerate(matched_docs):
-                    st.write(f"Application {i+1}:")
-                    st.write(doc.page_content)
-                    st.write("----------------------------------------------")
+                for i, (sim, doc) in enumerate(matched_docs):
+                    if st.button(f"Show Application {i+1} (Match: {sim*100:.2f}%)"):
+                        st.write(f"Application {i+1}:")
+                        st.write(doc.page_content)
+                        st.write("----------------------------------------------")
             else:
                 st.write("No applications matched the criteria.")
 else:
